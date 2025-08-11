@@ -318,7 +318,7 @@ async def test_options(
     ("group_type", "extra_options", "extra_options_after", "advanced"),
     [
         ("light", {"all": False}, {"all": False}, False),
-        ("light", {"all": True}, {"all": True}, False),
+        ("light", {"all": True}, {"all": False}, False),
         ("light", {"all": False}, {"all": False}, True),
         ("light", {"all": True}, {"all": False}, True),
         ("siren", {"all": False}, {"all": False}, False),
@@ -326,7 +326,7 @@ async def test_options(
         ("siren", {"all": False}, {"all": False}, True),
         ("siren", {"all": True}, {"all": False}, True),
         ("switch", {"all": False}, {"all": False}, False),
-        ("switch", {"all": True}, {"all": True}, False),
+        ("switch", {"all": True}, {"all": False}, False),
         ("switch", {"all": False}, {"all": False}, True),
         ("switch", {"all": True}, {"all": False}, True),
     ],

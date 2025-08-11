@@ -38,6 +38,8 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
+type FreeboxConfigEntry = ConfigEntry[FreeboxRouter]
+
 
 def is_json(json_str: str) -> bool:
     """Validate if a String is a JSON value or not."""
@@ -102,7 +104,7 @@ class FreeboxRouter:
     def __init__(
         self,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: FreeboxConfigEntry,
         api: Freepybox,
         freebox_config: Mapping[str, Any],
     ) -> None:
@@ -115,6 +117,7 @@ class FreeboxRouter:
         self.name: str = freebox_config["model_info"]["pretty_name"]
         self.mac: str = freebox_config["mac"]
         self._sw_v: str = freebox_config["firmware_version"]
+        self._hw_v: str | None = freebox_config.get("board_name")
         self._attrs: dict[str, Any] = {}
 
         self.supports_hosts = True
@@ -280,7 +283,9 @@ class FreeboxRouter:
             identifiers={(DOMAIN, self.mac)},
             manufacturer="Freebox SAS",
             name=self.name,
+            model=self.name,
             sw_version=self._sw_v,
+            hw_version=self._hw_v,
         )
 
     @property
