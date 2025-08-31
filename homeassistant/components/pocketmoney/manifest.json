@@ -1,0 +1,12 @@
+{
+  "domain": "pocketmoney",
+  "name": "Pocket Money",
+  "codeowners": [
+    "@your-github-username"
+  ],
+  "integration_type": "helper",
+  "documentation": "https://www.example.com/docs/pocketmoney",
+  "requirements": [],
+  "config_flow": true,
+  "quality_scale": "bronze"
+}
