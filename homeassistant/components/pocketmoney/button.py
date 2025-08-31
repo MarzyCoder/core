@@ -2,7 +2,8 @@
 
 from homeassistant.components.button import ButtonEntity
 from homeassistant.helpers.entity import DeviceInfo
-from .const import DOMAIN, BUTTON_GIVE
+
+from .const import BUTTON_GIVE, DOMAIN
 
 
 async def async_setup_entry(hass, entry, async_add_entities):

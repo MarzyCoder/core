@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
-from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
+
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import EntityCategory
 from homeassistant.helpers.entity import DeviceInfo
+
 from .const import DOMAIN, SENSOR_NEXT_DAY
 
 
