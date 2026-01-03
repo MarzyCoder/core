@@ -16,6 +16,7 @@
           "media_player": "Media player group",
           "notify": "Notify group",
           "sensor": "Sensor group",
+          "siren": "Siren group",
           "switch": "Switch group"
         }
       },
@@ -116,6 +117,14 @@
           "ignore_non_numeric": "If enabled, the group's state is calculated if at least one member has a numerical value. If disabled, the group's state is calculated only if all group members have numerical values."
         }
       },
+      "siren": {
+        "title": "[%key:component::group::config::step::user::title%]",
+        "data": {
+          "entities": "[%key:component::group::config::step::binary_sensor::data::entities%]",
+          "hide_members": "[%key:component::group::config::step::binary_sensor::data::hide_members%]",
+          "name": "[%key:common::config_flow::data::name%]"
+        }
+      },
       "switch": {
         "title": "[%key:component::group::config::step::user::title%]",
         "data": {
@@ -201,6 +210,14 @@
         },
         "data_description": {
           "ignore_non_numeric": "[%key:component::group::config::step::sensor::data_description::ignore_non_numeric%]"
+        }
+      },
+      "siren": {
+        "description": "[%key:component::group::config::step::binary_sensor::description%]",
+        "data": {
+          "all": "[%key:component::group::config::step::binary_sensor::data::all%]",
+          "entities": "[%key:component::group::config::step::binary_sensor::data::entities%]",
+          "hide_members": "[%key:component::group::config::step::binary_sensor::data::hide_members%]"
         }
       },
       "switch": {

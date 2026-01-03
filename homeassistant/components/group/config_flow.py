@@ -34,6 +34,7 @@ from .lock import async_create_preview_lock
 from .media_player import MediaPlayerGroup, async_create_preview_media_player
 from .notify import async_create_preview_notify
 from .sensor import async_create_preview_sensor
+from .siren import async_create_preview_siren
 from .switch import async_create_preview_switch
 
 _STATISTIC_MEASURES = [
@@ -158,6 +159,17 @@ SWITCH_CONFIG_SCHEMA = basic_group_config_schema("switch").extend(
         vol.Required(CONF_ALL, default=False): selector.BooleanSelector(),
     }
 )
+async def siren_options_schema(
+    domain: str, handler: SchemaCommonFlowHandler | None
+) -> vol.Schema:
+    """Generate options schema."""
+    return (await basic_group_options_schema(domain, handler)).extend(
+        {
+            vol.Required(
+                CONF_ALL, default=False, description={"advanced": True}
+            ): selector.BooleanSelector(),
+        }
+    )
 
 
 GROUP_TYPES = [
@@ -171,6 +183,7 @@ GROUP_TYPES = [
     "media_player",
     "notify",
     "sensor",
+    "siren",
     "switch",
 ]
 
@@ -248,6 +261,11 @@ CONFIG_FLOW = {
         preview="group",
         validate_user_input=set_group_type("sensor"),
     ),
+    "siren": SchemaFlowFormStep(
+        basic_group_config_schema("siren"),
+        preview="group",
+        validate_user_input=set_group_type("siren"),
+    ),
     "switch": SchemaFlowFormStep(
         SWITCH_CONFIG_SCHEMA,
         preview="group",
@@ -298,6 +316,10 @@ OPTIONS_FLOW = {
         partial(sensor_options_schema, "sensor"),
         preview="group",
     ),
+    "siren": SchemaFlowFormStep(
+        partial(siren_options_schema, "siren"),
+        preview="group",
+    ),
     "switch": SchemaFlowFormStep(
         partial(light_switch_options_schema, "switch"),
         preview="group",
@@ -320,6 +342,7 @@ CREATE_PREVIEW_ENTITY: dict[
     "media_player": async_create_preview_media_player,
     "notify": async_create_preview_notify,
     "sensor": async_create_preview_sensor,
+    "siren": async_create_preview_siren,
     "switch": async_create_preview_switch,
 }
 
