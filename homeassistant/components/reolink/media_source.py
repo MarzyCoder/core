@@ -63,13 +63,23 @@ class ReolinkVODMediaSource(MediaSource):
         """Resolve media to a url."""
         identifier = ["UNKNOWN"]
         if item.identifier is not None:
-            identifier = item.identifier.split("|", 6)
-        if identifier[0] != "FILE":
+            identifier = item.identifier.split("|")
+        if identifier[0] != "FILE" or len(identifier) < 7:
             raise Unresolvable(f"Unknown media item '{item.identifier}'.")
 
-        _, config_entry_id, channel_str, stream_res, filename, start_time, end_time = (
-            identifier
-        )
+        (
+            _,
+            config_entry_id,
+            channel_str,
+            stream_res,
+            filename,
+            start_time,
+            end_time,
+            *rest,
+        ) = identifier
+        file_size: int | None = None
+        if rest and rest[0].isdigit():
+            file_size = int(rest[0])
         channel = int(channel_str)
 
         host = get_host(self.hass, config_entry_id)
@@ -94,7 +104,12 @@ class ReolinkVODMediaSource(MediaSource):
             VodRequestType.PLAYBACK,
         }:
             proxy_url = async_generate_playback_proxy_url(
-                config_entry_id, channel, filename, stream_res, vod_type.value
+                config_entry_id,
+                channel,
+                filename,
+                stream_res,
+                vod_type.value,
+                file_size,
             )
             return PlayMedia(proxy_url, "video/mp4")
 
@@ -425,10 +440,14 @@ class ReolinkVODMediaSource(MediaSource):
                     str(trigger.name).title() for trigger in file.triggers
                 )
 
+            identifier = f"FILE|{config_entry_id}|{channel}|{stream}|{file.file_name}|{file.start_time_id}|{file.end_time_id}"
+            if file.size:
+                identifier = f"{identifier}|{file.size}"
+
             children.append(
                 BrowseMediaSource(
                     domain=DOMAIN,
-                    identifier=f"FILE|{config_entry_id}|{channel}|{stream}|{file.file_name}|{file.start_time_id}|{file.end_time_id}",
+                    identifier=identifier,
                     media_class=MediaClass.VIDEO,
                     media_content_type=MediaType.VIDEO,
                     title=file_name,
